@@ -27,7 +27,9 @@ export function useRealTimeSync(playerId?: string) {
 						localStorage.setItem(key, JSON.stringify(existing));
 					}
 					// For updates/deletes, a full reload could be implemented
-				} catch (_) {}
+				} catch (e) {
+					console.error('Realtime sync error:', e);
+				}
 			});
 
 		channel.subscribe();
