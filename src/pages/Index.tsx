@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { LoginForm } from "@/components/LoginForm";
 import { PlayerDashboard } from "@/components/PlayerDashboard";
+import { useRealTimeSync } from "@/hooks/useRealTimeSync";
+import { useWithdrawalsRealtime } from "@/hooks/useWithdrawalsRealtime";
+import { useRoundsRealtimeSync } from "@/hooks/useRoundsRealtimeSync";
+import { useChatUpload } from "@/hooks/useChatUpload";
 
 const Index = () => {
   // Initialize state from localStorage if available
@@ -37,6 +41,17 @@ const Index = () => {
       console.error('Failed to save session data:', error);
     }
   }, [isLoggedIn, userType, currentUserId]);
+
+  // Start realtime sync for this user
+  useRealTimeSync(currentUserId);
+  useWithdrawalsRealtime(currentUserId);
+  useRoundsRealtimeSync();
+
+  // Prepare chat upload (exposed via window for now, to avoid editing big component)
+  const { upload } = useChatUpload(currentUserId);
+  useEffect(() => {
+    (window as any).__uploadChatImage = upload;
+  }, [upload]);
 
   const handleLogin = (userType: 'admin' | 'user', userId: string) => {
     setIsLoggedIn(true);
