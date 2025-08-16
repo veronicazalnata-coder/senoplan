@@ -15,7 +15,7 @@ export function useRoundsRealtimeSync() {
 					const seri = row.series as number | undefined;
 
 					const currentData = localStorage.getItem('currentServerTimer');
-					let timerData: any = currentData ? JSON.parse(currentData) : { server1: {}, server2: {} };
+					const timerData: any = currentData ? JSON.parse(currentData) : { server1: {}, server2: {} };
 
 					if (!timerData[serverId]) timerData[serverId] = {};
 					if (typeof seri === 'number') timerData[serverId].seri = seri;
