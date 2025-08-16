@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { LoginForm } from "@/components/LoginForm";
 import { PlayerDashboard } from "@/components/PlayerDashboard";
+import { useRealTimeSync } from "@/hooks/useRealTimeSync";
 
 const Index = () => {
   // Initialize state from localStorage if available
@@ -37,6 +38,9 @@ const Index = () => {
       console.error('Failed to save session data:', error);
     }
   }, [isLoggedIn, userType, currentUserId]);
+
+  // Start realtime sync for this user
+  useRealTimeSync(currentUserId);
 
   const handleLogin = (userType: 'admin' | 'user', userId: string) => {
     setIsLoggedIn(true);

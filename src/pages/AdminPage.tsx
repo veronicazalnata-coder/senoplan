@@ -3,6 +3,7 @@ import AdminDashboard from '@/components/AdminDashboard';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { supabase } from '@/lib/supabaseClient';
 
 const AdminPage: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -87,6 +88,20 @@ const AdminPage: React.FC = () => {
       console.log('👋 Admin logged out and session cleared');
     } catch (error) {
       console.error('Error clearing admin session:', error);
+    }
+  };
+
+  // Helper to mirror local message to Supabase (basic example)
+  const mirrorMessageToSupabase = async (playerId: string, text: string) => {
+    try {
+      const { error } = await supabase.from('messages').insert({
+        player_id: playerId,
+        sender: 'admin',
+        text: text
+      });
+      if (error) console.error('Supabase insert error:', error.message);
+    } catch (e) {
+      console.error('Mirror to Supabase failed:', e);
     }
   };
 
