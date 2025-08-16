@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { LoginForm } from "@/components/LoginForm";
 import { PlayerDashboard } from "@/components/PlayerDashboard";
 import { useRealTimeSync } from "@/hooks/useRealTimeSync";
+import { useWithdrawalsRealtime } from "@/hooks/useWithdrawalsRealtime";
+import { useRoundsRealtimeSync } from "@/hooks/useRoundsRealtimeSync";
 
 const Index = () => {
   // Initialize state from localStorage if available
@@ -41,6 +43,8 @@ const Index = () => {
 
   // Start realtime sync for this user
   useRealTimeSync(currentUserId);
+  useWithdrawalsRealtime(currentUserId);
+  useRoundsRealtimeSync();
 
   const handleLogin = (userType: 'admin' | 'user', userId: string) => {
     setIsLoggedIn(true);
